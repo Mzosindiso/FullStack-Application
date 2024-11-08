@@ -1,0 +1,111 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+  }
+  .logo {
+  margin-right: 20px;
+  }
+  .logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-family: 'Montserrat', sans-serif;
+  }
+  .logo-highlight {
+    color: #ff6b6b;
+    font-style: italic;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: -150px;
+  }
+  .nav-links li {
+    margin-right: 1.5rem;
+  }
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    margin-left: -200px;
+  }
+  .search-bar input {
+    border: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+  }
+  .search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .utility-links {
+    display: flex;
+    align-items: center;
+  }
+  .language-selector {
+    margin-right: 1rem;
+  }
+  .language-selector select {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+  }
+  .login-icon, .cart-icon {
+    color: white;
+    font-size: 1.2rem;
+    margin-left: 1rem;
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+    }
+    .nav-links, .search-bar, .utility-links {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .nav-links {
+        order: 3;
+    }
+  }
+  
+  /* Adding to the cart icon */
+  .cart-icon {
+      color: white;
+      font-size: 1.2rem;
+      margin-left: 1rem;
+      text-decoration: none;
+      position: relative; 
+  }
+  
+  .cart-item-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      font-weight: bold;
+}
