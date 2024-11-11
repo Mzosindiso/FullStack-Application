@@ -8,6 +8,7 @@ import About from './pages/About';
 import LimitedEdition from './pages/LimitedEdition';
 import Books from './pages/Books';
 import Contact from './pages/Contact';
+import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
@@ -24,6 +25,7 @@ function App() {
             <Route path="/limited-edition" element={<LimitedEdition />} />
             <Route path="/books" element={<Books />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/cart" element={<Cart />} />

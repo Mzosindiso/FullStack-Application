@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faShoppingCart, faSearch, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
@@ -23,6 +23,13 @@ const Navbar = () => {
                 <input type="text" placeholder="Search books..." />
                 <button><FontAwesomeIcon icon={faSearch} /></button>
             </div>
+            <Link to="/dashboard" className="dashboard-icon">
+                <FontAwesomeIcon icon={faTachometerAlt} />
+                {/* <span>Dashboard</span> */}
+            </Link>
+            <ul className="nav-links">
+            <li><Link to="/contact">Contact</Link></li>
+            </ul>
             <div className="utility-links">
                 <div className="language-selector">
                     <select>

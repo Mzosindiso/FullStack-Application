@@ -1,8 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import assets from '../assets';
 import '../index.css';
 
 const Cart = () => {
+    const [cartItems, setCartItems] = useState([]);
+    const [subtotal, setSubtotal] = useState(0);
+
+    useEffect(() => {
+        // Initialize cart items (this could be fetched from an API or local storage in a real app)
+        const initialCartItems = [
+            { id: 1, title: "Cracking the Coding Interview", author: "Gayle Laakmann McDowell", price: 219.99, quantity: 1, image: assets.crackingInterview },
+            { id: 2, title: "System Design Interview – An Insider's Guide: Volume 2", author: "Alex Xu, Sahn Lam", price: 219.99, quantity: 1, image: assets.systemsDesign },
+            { id: 3, title: "Software Design Patterns: Elements of Reusable Object-Oriented Software", author: "Gamma, Helm, Johnson, and Vlissides", price: 219.99, quantity: 1, image: assets.python },
+        ];
+        setCartItems(initialCartItems);
+    }, []);
+
+    useEffect(() => {
+        // Calculate subtotal whenever cart items change
+        const newSubtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        setSubtotal(newSubtotal);
+    }, [cartItems]);
+
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
+    const updateQuantity = (id, newQuantity) => {
+        setCartItems(cartItems.map(item => 
+            item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
+        ).filter(item => item.quantity > 0));
+    };
+
+    const vat = subtotal * 0.15;
+    const total = subtotal + vat;
+
     return (
         <>
         <div className="cart-container">
@@ -16,73 +48,24 @@ const Cart = () => {
                     <h4>Total</h4>
                 </div>
                 <div className="cart-items">
-                    {/* Example cart item */}
-                    <div className="cart-item">
-                        <div className="item-details">
-                            <img src={assets.crackingInterview} />
-                            <div>
-                                <h4>Cracking the Coding Interview: 189 Programming Questions and Solutions
-                                    (Cracking the Interview & Career) 6th Edition</h4>
-                                <p>by Gayle Laakmann McDowell (Author)</p>
+                    {cartItems.map(item => (
+                        <div key={item.id} className="cart-item">
+                            <div className="item-details">
+                                <img src={item.image} alt={item.title} />
+                                <div>
+                                    <h4>{item.title}</h4>
+                                    <p>by {item.author}</p>
+                                </div>
                             </div>
-                        </div>
-                        <p className="item-price">R219.99</p>
-                        <div className="item-quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                        <p className="item-total">R219.99</p>
-                    </div>
-                    <div className="cart-item">
-                        <div className="item-details">
-                            <img src={assets.systemsDesign} />
-                            <div>
-                                <h4>System Design Interview – An Insider's Guide: Volume 2</h4>
-                                <p>by Alex Xu (Author), Sahn Lam (Author)</p>
+                            <p className="item-price">R{item.price.toFixed(2)}</p>
+                            <div className="item-quantity">
+                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                                <span>{item.quantity}</span>
+                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
                             </div>
+                            <p className="item-total">R{(item.price * item.quantity).toFixed(2)}</p>
                         </div>
-                        <p className="item-price">R219.99</p>
-                        <div className="item-quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                        <p className="item-total">R219.99</p>
-                    </div>
-                    <div className="cart-item">
-                        <div className="item-details">
-                            <img src={assets.python} />
-                            <div>
-                                <h4>Software Design Patterns: Elements of Reusable Object-Oriented Software</h4>
-                                <p>by Gamma, Helm, Johnson, and Vlissides (Author)</p>
-                            </div>
-                        </div>
-                        <p className="item-price">R219.99</p>
-                        <div className="item-quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                        <p className="item-total">R219.99</p>
-                    </div>
-                    <div className="cart-item">
-                        <div className="item-details">
-                            <img src={assets.crackingInterview} />
-                            <div>
-                                <h4>Cracking the Coding Interview: 189 Programming Questions and Solutions
-                                    (Cracking the Interview & Career) 6th Edition</h4>
-                                <p>by Gayle Laakmann McDowell (Author)</p>
-                            </div>
-                        </div>
-                        <p className="item-price">R219.99</p>
-                        <div className="item-quantity">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                        <p className="item-total">R219.99</p>
-                    </div>
+                    ))}
                 </div>
             </div>
             {/* Order summary */}
@@ -90,18 +73,18 @@ const Cart = () => {
                 <h3>Order Summary</h3>
                 <div className="summary-row">
                     <span>Subtotal</span>
-                    <span>R0.00</span>
+                    <span>R{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
                     <span>VAT (15%)</span>
-                    <span>R0.00</span>
+                    <span>R{vat.toFixed(2)}</span>
                 </div>
                 <div className="summary-row total">
                     <span>Total</span>
-                    <span>R.00</span>
+                    <span>R{total.toFixed(2)}</span>
                 </div>
                 <button className="checkout-btn">Proceed to Checkout</button>
-                <button className="clear-btn">Clear Cart</button>
+                <button className="clear-btn" onClick={clearCart}>Clear Cart</button>
             </div>
         </div>
         </>

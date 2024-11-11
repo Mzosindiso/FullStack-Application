@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faLinkedin, faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
 import '../index.css';
 
 const Login = () => {
@@ -9,11 +10,37 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [resetEmail, setResetEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const validateEmail = (email) => {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Login attempted with:', email, password);
+        setErrorMessage('');
+
+        if (!email || !password) {
+            setErrorMessage('Please enter both email and password.');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setErrorMessage('Please enter a valid email address.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/login', { email, password });
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.userId);
+            navigate('/dashboard');
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || 'An error occurred during login.');
+        }
     };
 
     const handleResetPassword = (e) => {
@@ -31,6 +58,7 @@ const Login = () => {
                 <div className="login-form">
                     <div className="login-left">
                         <h2>Login with Email</h2>
+                        {errorMessage && <div className="error-message">{errorMessage}</div>}
                         <form onSubmit={handleLogin}>
                             <div className="input-group">
                                 <label htmlFor="email">Email</label>
