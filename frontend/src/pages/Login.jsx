@@ -11,6 +11,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [resetEmail, setResetEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [resetEmailSent, setResetEmailSent] = useState(false);
+    const [resetError, setResetError] = useState('');
+
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -43,13 +46,22 @@ const Login = () => {
         }
     };
 
-    const handleResetPassword = (e) => {
+    const handleResetPassword = async (e) => {
         e.preventDefault();
-        // Handle password reset logic here
-        console.log('Password reset requested for:', resetEmail);
-        alert('Password reset link has been sent to your email.');
-        setShowForgotPassword(false);
-        setResetEmail('');
+        setResetError('');
+        setResetEmailSent(false);
+
+        if (!validateEmail(resetEmail)) {
+            setResetError('Please enter a valid email address.');
+            return;
+        }
+
+        try {
+            await axios.post('http://localhost:5000/api/reset-password', { email: resetEmail });
+            setResetEmailSent(true);
+        } catch (error) {
+            setResetError(error.response?.data?.message || 'An error occurred while processing your request.');
+        }
     };
 
     return (
@@ -112,20 +124,25 @@ const Login = () => {
             ) : (
                 <div className="forgot-password-form">
                     <h2>Forgot Password</h2>
-                    <form onSubmit={handleResetPassword}>
-                        <div className="input-group">
-                            <label htmlFor="resetEmail">Email</label>
-                            <input 
-                                type="email" 
-                                id="resetEmail" 
-                                name="resetEmail" 
-                                required
-                                value={resetEmail}
-                                onChange={(e) => setResetEmail(e.target.value)}
-                            />
-                        </div>
-                        <button type="submit" className="reset-button">Reset Password</button>
-                    </form>
+                    {resetEmailSent ? (
+                        <p className="success-message">A password reset link has been sent to your email.</p>
+                    ) : (
+                        <form onSubmit={handleResetPassword}>
+                            <div className="input-group">
+                                <label htmlFor="resetEmail">Email</label>
+                                <input 
+                                    type="email" 
+                                    id="resetEmail" 
+                                    name="resetEmail" 
+                                    required
+                                    value={resetEmail}
+                                    onChange={(e) => setResetEmail(e.target.value)}
+                                />
+                            </div>
+                            {resetError && <div className="error-message">{resetError}</div>}
+                            <button type="submit" className="reset-button">Reset Password</button>
+                        </form>
+                    )}
                     <div className="back-to-login">
                         <a href="#" onClick={() => setShowForgotPassword(false)}>Back to Login</a>
                     </div>

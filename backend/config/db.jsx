@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-    await mongoose.connect('mongodb+srv://mzura680:ba15Ki8ziFhOC25D@cluster0.bjht1.mongodb.net/Cape Reads')
+    await mongoose.connect('mongodb+srv://mzura680:ba15Ki8ziFhOC25D@cluster0.bjht1.mongodb.net/cape_reads')
     .then(() => console.log('MongoDB Connected...')); };
 
     export default connectDB;

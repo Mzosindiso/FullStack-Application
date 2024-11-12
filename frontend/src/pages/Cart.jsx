@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import assets from '../assets';
 import '../index.css';
 
@@ -83,7 +84,7 @@ const Cart = () => {
                     <span>Total</span>
                     <span>R{total.toFixed(2)}</span>
                 </div>
-                <button className="checkout-btn">Proceed to Checkout</button>
+                <Link to="/payment" className="checkout-btn">Proceed to Checkout</Link>
                 <button className="clear-btn" onClick={clearCart}>Clear Cart</button>
             </div>
         </div>

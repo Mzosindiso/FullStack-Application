@@ -16,20 +16,14 @@ const Navbar = () => {
             <ul className="nav-links">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/about">About us</Link></li>
-                <li><Link to="/limited-edition">Limited editions</Link></li>
                 <li><Link to="/books">Books</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
             </ul>
             <div className="search-bar">
                 <input type="text" placeholder="Search books..." />
                 <button><FontAwesomeIcon icon={faSearch} /></button>
             </div>
-            <Link to="/dashboard" className="dashboard-icon">
-                <FontAwesomeIcon icon={faTachometerAlt} />
-                {/* <span>Dashboard</span> */}
-            </Link>
-            <ul className="nav-links">
-            <li><Link to="/contact">Contact</Link></li>
-            </ul>
+
             <div className="utility-links">
                 <div className="language-selector">
                     <select>
