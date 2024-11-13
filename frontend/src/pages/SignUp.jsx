@@ -10,12 +10,15 @@ const validateEmail = (email) => {
 const validatePassword = (password) => {
   return password.length >= 8;
 };
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    address: '',
+    phoneNumber: ''
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -59,6 +62,8 @@ const SignUp = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          address: formData.address,
+          phoneNumber: formData.phoneNumber
         }),
       });
   
@@ -125,6 +130,26 @@ const SignUp = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="address">Address</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
             />
           </div>
           <button type="submit" className="signup-button">Sign Up</button>

@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
           <Footer />
         </CartProvider>
