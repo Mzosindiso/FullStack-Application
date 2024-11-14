@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import assets from '../assets';
+import { book_list } from '../assets/assets';
+import assets from '../assets'; // Import book_list directly
 import '../index.css';
+import { useCart } from '../components/context/CartContext';
 
 const Home = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const booksPerPage = 5;
+    const { addToCart } = useCart();
 
-    // Fetch books from assets.js and sort by ratings count
-    const allBooks = Object.entries(assets)
-        .filter(([key, value]) => typeof value === 'object' && value.hasOwnProperty('image'))
-        .map(([key, value]) => ({
-            id: key,
-            ...value,
-            ratingsCount: value.ratingsCount || 0
+    // Fetch books from book_list and sort by ratings count
+    const allBooks = book_list
+        .map((book) => ({
+            id: book.bookID,
+            title: book.title,
+            author: book.authors,
+            image: book.image,
+            price: book.price || "Not available",
+            ratingsCount: book.ratings_count || 0
         }))
         .sort((a, b) => b.ratingsCount - a.ratingsCount);
 
@@ -65,10 +70,10 @@ const Home = () => {
                             <img src={book.image} alt={`Book Cover ${book.title}`} />
                             <h3>{book.title}</h3>
                             <p>by {book.author}</p>
-                            <p className="price">{book.price}</p>
+                            <p className="price">R{book.price}</p>
                             <p className="ratings">Ratings: {book.ratingsCount}</p>
-                            <button className="add-to-cart">Add to Cart</button>
-                            <button className="add-to-wishlist">Add to Wishlist</button>
+                            <button className="add-to-cart" onClick={() => addToCart(book)}>Add to Cart</button>
+                            {/* <button className="add-to-wishlist">Add to Wishlist</button> */}
                         </div>
                     ))}
                 </div>

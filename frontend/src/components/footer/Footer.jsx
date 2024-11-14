@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './footer.css';
 import Logo from '../../assets/Logo-transparent-logo-size.png';
 
 const Footer = () => {
+    const [email, setEmail] = useState('');
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await axios.post('/api/subscribe', { email });
+        if (response.data.success) {
+          alert('Thank you for subscribing to our newsletter!');
+          setEmail('');
+        } else {
+          alert('Failed to subscribe. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error subscribing to newsletter:', error);
+        alert('An error occurred while subscribing. Please try again.');
+      }
+    };
+
     return (
         <footer className="footer">
             <div className="footer-grid-0">
@@ -41,8 +61,15 @@ const Footer = () => {
             </div>
             <div className="footer-grid-4">
                 <h3>Sign up for newsletter</h3>
-                <input type="email" placeholder="Enter your email" />
+                <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
                 <button className="submit-btn">Subscribe</button>
+                </form>
             </div>
         </footer>
     );

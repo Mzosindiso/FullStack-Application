@@ -41,7 +41,14 @@ const Books = () => {
     useEffect(() => {
         // Fetch books data or import it
         const fetchedBooks = book_list
-            
+        .map((book) => ({
+            id: book.bookID,
+            title: book.title,
+            author: book.authors,
+            image: book.image,
+            price: book.price || "Not available",
+            ratingsCount: book.ratings_count || 0
+        }))
         
         let processedBooks = [...fetchedBooks];
         if (filterOption) {
@@ -94,10 +101,11 @@ const Books = () => {
                 <div className="book-grid">
                     {visibleBooks.map(book => (
                         <div className="book-card" key={book.id}>
-                            <img src={book.image} alt={`Cover of ${book.title}`} />
+                            <img src={book.image} alt={`Book Cover ${book.title}`} />
                             <h3>{book.title}</h3>
                             <p>by {book.author}</p>
-                            <p className="price">R{book.price.toFixed(2)}</p>
+                            <p className="price">R{book.price}</p>
+                            <p className="ratings">Ratings: {book.ratingsCount}</p>
                             <button className="add-to-cart" onClick={() => addToCart(book)}>Add to Cart</button>
                             <button className="add-to-wishlist">Add to Wishlist</button>
                         </div>
@@ -111,7 +119,7 @@ const Books = () => {
                         onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
                         disabled={currentPage === 1}
                     >
-                        Previous
+                        Prev
                     </button>
                     <span id="pageInfo">
                         Page {currentPage} of {Math.ceil(books.length / booksPerPage)}

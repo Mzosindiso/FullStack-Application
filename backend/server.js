@@ -11,6 +11,7 @@ import crypto from 'crypto';
 dotenv.config();
 
 const app = express();
+const router = express.Router();
 
 // Middleware
 app.use(cors());

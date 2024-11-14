@@ -12,6 +12,11 @@ import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
 import Dashboard from './pages/Dashboard';
+import Terms from './components/Terms&Conditions';
+import Policy from './components/Privacypolicy';
+import Accessibility from './components/Accessibility';
+import Glossary from './components/Glossary';
+import ReturnsAndShipping from './components/Returns&Shipping';
 
 function App() {
   return (
@@ -29,6 +34,11 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Policy />} />
+            <Route path="/accessibility" element={<Accessibility />} />
+            <Route path="/glossary" element={<Glossary />} />
+            <Route path="/shipping" element={<ReturnsAndShipping />} />
           </Routes>
           <Footer />
         </CartProvider>

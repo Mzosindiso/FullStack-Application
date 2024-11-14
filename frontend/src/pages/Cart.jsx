@@ -1,43 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import assets from '../assets';
+import { useCart } from '../components/context/CartContext'; // Import the useCart hook
 import '../index.css';
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
+    const { cart, addToCart } = useCart(); // Get cart items and addToCart function from context
     const [subtotal, setSubtotal] = useState(0);
-
-    useEffect(() => {
-        // Initialize cart items (this could be fetched from an API or local storage in a real app)
-        const initialCartItems = [
-            { id: 1, title: "Cracking the Coding Interview", author: "Gayle Laakmann McDowell", price: 219.99, quantity: 1, image: assets.crackingInterview },
-            { id: 2, title: "System Design Interview – An Insider's Guide: Volume 2", author: "Alex Xu, Sahn Lam", price: 219.99, quantity: 1, image: assets.systemsDesign },
-            { id: 3, title: "Software Design Patterns: Elements of Reusable Object-Oriented Software", author: "Gamma, Helm, Johnson, and Vlissides", price: 219.99, quantity: 1, image: assets.python },
-        ];
-        setCartItems(initialCartItems);
-    }, []);
+    const [setCart, setCartItems] = useState([]);
 
     useEffect(() => {
         // Calculate subtotal whenever cart items change
-        const newSubtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const newSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         setSubtotal(newSubtotal);
-    }, [cartItems]);
-
-    const clearCart = () => {
-        setCartItems([]);
-    };
+    }, [cart]);
 
     const updateQuantity = (id, newQuantity) => {
-        setCartItems(cartItems.map(item => 
-            item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-        ).filter(item => item.quantity > 0));
+        addToCart({ id, quantity: newQuantity });
     };
 
     const vat = subtotal * 0.15;
     const total = subtotal + vat;
 
     return (
-        <>
         <div className="cart-container">
             <div className="cart-content">
                 <h2>Cart</h2>
@@ -49,7 +33,7 @@ const Cart = () => {
                     <h4>Total</h4>
                 </div>
                 <div className="cart-items">
-                    {cartItems.map(item => (
+                    {cart.map(item => (
                         <div key={item.id} className="cart-item">
                             <div className="item-details">
                                 <img src={item.image} alt={item.title} />
@@ -85,10 +69,9 @@ const Cart = () => {
                     <span>R{total.toFixed(2)}</span>
                 </div>
                 <Link to="/payment" className="checkout-btn">Proceed to Checkout</Link>
-                <button className="clear-btn" onClick={clearCart}>Clear Cart</button>
+                <button className="clear-btn" onClick={() => setCart([])}>Clear Cart</button>
             </div>
         </div>
-        </>
     );
 };
 

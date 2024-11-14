@@ -76,18 +76,53 @@ nav {
     margin-left: 1rem;
     text-decoration: none;
   }
-  @media (max-width: 768px) {
-    nav {
-        flex-wrap: wrap;
-    }
-    .nav-links, .search-bar, .utility-links {
-        width: 100%;
-        margin-top: 1rem;
-    }
-    .nav-links {
-        order: 3;
-    }
+/* Add this to your CSS file */
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
   }
+
+  .logo-text {
+    font-size: 24px;
+  }
+
+  .search-bar {
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+
+  .utility-links {
+    display: flex;
+    align-items: center;
+  }
+
+  .language-selector {
+    margin-right: 10px;
+  }
+
+  .login-icon, .cart-icon {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 18px;
+  }
+
+  .search-bar {
+    margin-left: 5px;
+  }
+
+  .language-selector {
+    display: none;
+  }
+
+  .login-icon, .cart-icon {
+    font-size: 16px;
+  }
+}
   
   /* Adding to the cart icon */
   .cart-icon {
