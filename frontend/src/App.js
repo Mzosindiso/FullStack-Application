@@ -17,6 +17,7 @@ import Policy from './components/Privacypolicy';
 import Accessibility from './components/Accessibility';
 import Glossary from './components/Glossary';
 import ReturnsAndShipping from './components/Returns&Shipping';
+import Checkout from './components/checkout';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/accessibility" element={<Accessibility />} />
             <Route path="/glossary" element={<Glossary />} />
             <Route path="/shipping" element={<ReturnsAndShipping />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
           <Footer />
         </CartProvider>

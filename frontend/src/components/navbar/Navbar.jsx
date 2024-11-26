@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faShoppingCart, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 const Navbar = () => {
-    const { totalCartItems } = useCart();
+    const { cart } = useCart();
+    const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <nav>
@@ -37,7 +38,7 @@ const Navbar = () => {
                 </Link>
                 <Link to="/cart" className="cart-icon">
                     <FontAwesomeIcon icon={faShoppingCart} />
-                    {totalCartItems > 0 && <span className="cart-item-count">{totalCartItems}</span>}
+                    {cartItemCount > 0 && <span className="cart-item-count">{cartItemCount}</span>}
                 </Link>
             </div>
         </nav>

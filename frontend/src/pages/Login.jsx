@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faLinkedin, faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
@@ -13,11 +13,11 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [resetEmailSent, setResetEmailSent] = useState(false);
     const [resetError, setResetError] = useState('');
-
+    const location = useLocation();
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     };
 
@@ -25,22 +25,25 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setErrorMessage('');
-
+    
         if (!email || !password) {
             setErrorMessage('Please enter both email and password.');
             return;
         }
-
+    
         if (!validateEmail(email)) {
             setErrorMessage('Please enter a valid email address.');
             return;
         }
-
+    
         try {
             const response = await axios.post('http://localhost:5000/api/login', { email, password });
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', response.data.userId);
-            navigate('/dashboard');
+            
+            // Use the state from location to redirect after login
+            const { from } = location.state || { from: { pathname: "/dashboard" } };
+            navigate(from);
         } catch (error) {
             setErrorMessage(error.response?.data?.message || 'An error occurred during login.');
         }

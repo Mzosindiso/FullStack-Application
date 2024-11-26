@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../components/context/CartContext'; // Import the useCart hook
+import { useCart } from '../components/context/CartContext';
 import '../index.css';
 
 const Cart = () => {
-    const { cart, addToCart } = useCart(); // Get cart items and addToCart function from context
+    const { cart, updateCartItem, removeFromCart, clearCart } = useCart();
     const [subtotal, setSubtotal] = useState(0);
-    const [setCart, setCartItems] = useState([]);
-
+    const [navigate] = useState(null);
+    
     useEffect(() => {
-        // Calculate subtotal whenever cart items change
         const newSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         setSubtotal(newSubtotal);
     }, [cart]);
 
     const updateQuantity = (id, newQuantity) => {
-        addToCart({ id, quantity: newQuantity });
+        if (newQuantity < 1) {
+            removeFromCart(id);
+        } else {
+            const itemToUpdate = cart.find(item => item.id === id);
+            if (itemToUpdate) {
+                updateCartItem({ ...itemToUpdate, quantity: newQuantity });
+            }
+        }
     };
 
     const vat = subtotal * 0.15;
     const total = subtotal + vat;
+
+    const handleCheckout = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // User is logged in, proceed to checkout
+        navigate('/checkout');
+      } else {
+        // User is not logged in, redirect to login page
+        navigate('/login', { state: { from: '/cart' } });
+      }
+    };
 
     return (
         <div className="cart-container">
@@ -68,8 +85,8 @@ const Cart = () => {
                     <span>Total</span>
                     <span>R{total.toFixed(2)}</span>
                 </div>
-                <Link to="/payment" className="checkout-btn">Proceed to Checkout</Link>
-                <button className="clear-btn" onClick={() => setCart([])}>Clear Cart</button>
+                <Link to="/payment" className="checkout-btn" onClick={handleCheckout}>Proceed to Checkout</Link>
+                <button className="clear-btn" onClick={clearCart}>Clear Cart</button>
             </div>
         </div>
     );

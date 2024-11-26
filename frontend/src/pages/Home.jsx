@@ -34,10 +34,6 @@ const Home = () => {
         return () => clearInterval(interval);
     }, [currentIndex]);
 
-    const showImage = (index) => {
-        setCurrentIndex(index);
-    };
-
     const nextImage = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % 3);
     };
